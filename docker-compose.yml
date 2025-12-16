@@ -1,0 +1,36 @@
+﻿version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: UserService
+      dockerfile: Controllers/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  product-service:
+    build:
+      context: ProductService
+      dockerfile: Controllers/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  order-service:
+    build:
+      context: OrderService
+      dockerfile: Controllers/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  api-gateway:
+    build:
+      context: API_Gateway
+      dockerfile: Controllers/Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
