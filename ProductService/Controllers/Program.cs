@@ -1,18 +1,40 @@
+using Microsoft.EntityFrameworkCore;
+using ProductService.Infrastructure;
 using Prometheus;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog((context, services, configuration) =>
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+        .WriteTo.Console());
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHealthChecks().ForwardToPrometheus();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<ProductDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services
+    .AddHealthChecks()
+    .AddNpgSql(connectionString ?? string.Empty)
+    .ForwardToPrometheus();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ProductDbContext>();
+    dbContext.Database.EnsureCreated();
+    DbInitializer.Seed(dbContext);
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -20,14 +42,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
+app.UseSerilogRequestLogging();
 app.UseHttpMetrics();
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapMetrics();
+app.MapHealthChecks("/health");
 
 app.Run();
