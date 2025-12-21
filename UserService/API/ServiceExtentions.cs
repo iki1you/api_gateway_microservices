@@ -1,5 +1,5 @@
-﻿using Infrastructure;
-using Application;
+﻿//using Infrastructure;
+//using Application;
 
 namespace API
 {
@@ -7,8 +7,8 @@ namespace API
     {
         public static void Configure(IServiceCollection services)
         {
-            InfrastructureServiceExtensions.Configure(services);
-            ApplicationServiceExtensions.Configure(services);
+            //InfrastructureServiceExtensions.Configure(services);
+            //ApplicationServiceExtensions.Configure(services);
         }
     }
 }
