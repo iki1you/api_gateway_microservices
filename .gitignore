@@ -26,19 +26,22 @@
 /ApiGateway/Domain/obj
 /ApiGateway/Infrastructure/obj
 
-/UserService/Controllers/bin
+/UserService/API/bin
 /UserService/Application/bin
 /UserService/Domain/bin
 /UserService/Infrastructure/bin
 /ProductService/Application/bin
-/ProductService/Controllers/bin
+/ProductService/API/bin
 /ProductService/Domain/bin
 /ProductService/Infrastructure/bin
 /OrderService/Application/bin
-/OrderService/Controllers/bin
+/OrderService/API/bin
 /OrderService/Domain/bin
 /OrderService/Infrastructure/bin
-/ApiGateway/Controllers/bin
+/ApiGateway/API/bin
 /ApiGateway/Application/bin
 /ApiGateway/Domain/bin
 /ApiGateway/Infrastructure/bin
+/UserService/API/obj
+/OrderService/API/obj
+/ProductService/API/obj
