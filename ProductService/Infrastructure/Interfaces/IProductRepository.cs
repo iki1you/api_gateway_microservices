@@ -4,6 +4,12 @@ namespace Infrastructure.Interfaces
 {
     public interface IProductRepository
     {
-        public Task<Product> GetByIdAsync(long productId);
+        Task<Product?> GetByIdAsync(long productId, bool includeInactive = false);
+        Task<List<Product>> GetAllAsync(bool includeInactive = false);
+
+        Task AddAsync(Product product);
+        Task SaveChangesAsync();
+
+        Task<bool> ExistsAsync(long productId, bool includeInactive = false);
     }
 }
