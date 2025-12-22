@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\Requests\" />
+    <Folder Include="DTO\Responses\" />
+  </ItemGroup>
+
 </Project>
