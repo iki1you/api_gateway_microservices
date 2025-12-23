@@ -4,7 +4,7 @@ services:
   user-service:
     build:
       context: UserService
-      dockerfile: Controllers/Dockerfile
+      dockerfile: API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -12,7 +12,7 @@ services:
   product-service:
     build:
       context: ProductService
-      dockerfile: Controllers/Dockerfile
+      dockerfile: API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -20,7 +20,7 @@ services:
   order-service:
     build:
       context: OrderService
-      dockerfile: Controllers/Dockerfile
+      dockerfile: API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -28,26 +28,24 @@ services:
   api-gateway:
     build:
       context: ApiGateway
-      dockerfile: Controllers/Dockerfile
+      dockerfile: API/Dockerfile
     ports:
-      - "5000:80"
+      - '5000:80'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - user-service
-      - product-service
       - order-service
 
   prometheus:
     image: prom/prometheus:v2.54.1
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - '--config.file=/etc/prometheus/prometheus.yml'
     depends_on:
       - api-gateway
       - user-service
@@ -57,7 +55,7 @@ services:
   grafana:
     image: grafana/grafana:11.1.0
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
