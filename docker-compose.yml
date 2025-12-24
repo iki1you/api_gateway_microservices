@@ -1,6 +1,13 @@
 ﻿version: '3.8'
 
 services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
   user-service:
     build:
       context: UserService
@@ -34,8 +41,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__Redis=redis:6379
     depends_on:
       - order-service
+      - redis
 
   prometheus:
     image: prom/prometheus:v2.54.1
@@ -67,3 +76,4 @@ services:
 volumes:
   prometheus-data:
   grafana-data:
+  redis-data:
