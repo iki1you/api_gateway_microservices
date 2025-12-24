@@ -1,9 +1,16 @@
 ﻿using API;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ServiceExtentions.Configure(builder.Services);
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "ApiGateway:";
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -13,9 +20,6 @@ var app = builder.Build();
 
 UserHandlers.Map(app);
 
-
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,11 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
 app.UseHttpMetrics();
-
 app.UseHttpsRedirection();
-
 app.MapMetrics();
 
 app.Run();
