@@ -28,6 +28,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+OrderHandlers.Map(app);
 app.MapControllers();
 app.MapMetrics();
 
