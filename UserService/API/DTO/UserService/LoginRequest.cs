@@ -1,6 +1,4 @@
 ﻿namespace API.DTO.UserService
 {
-    public class LoginRequest
-    {
-    }
+    public record LoginRequest(string Username, string Password);
 }

@@ -1,7 +1,6 @@
-﻿using API.DTO.OrderService;
-using API.DTO.ProductService;
+﻿using API.DTO.ProductService;
 
 namespace API.DTO
 {
-    public record OrderProductResponse(OrderDTO OrderItemDTO, ProductDTO ProductDTO);
+    public record OrderProductResponse(long Id, ProductDTO ProductDTO);
 }

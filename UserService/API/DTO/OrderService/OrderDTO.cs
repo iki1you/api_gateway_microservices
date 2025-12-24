@@ -1,4 +1,4 @@
 ﻿namespace API.DTO.OrderService
 {
-    public record OrderDTO(long ProductId, int Quantity, decimal Price, decimal TotalCost);
+    public record OrderDTO(long Id, long UserId, long ProductId, int Quantity, decimal TotalCost);
 }
